@@ -1,8 +1,6 @@
 $(document).ready(function(){
-  let APIkey = "&api_key=WFWKuEi7c2nOXtzy42TUXMkcLKkB0jsS",
-  
-  topics = [];
-  var query;
+  let APIkey = "&api_key=WFWKuEi7c2nOXtzy42TUXMkcLKkB0jsS"
+
   $("#submitItem").on("click", function(e){
     e.preventDefault()
     query = $("#addItem").val()
@@ -12,11 +10,13 @@ $(document).ready(function(){
       btns.addClass("btns")
       $("#btnHolder").append(btns)
       btns.text(query)
+      $("#addItem").val("")
     }
   })
   $(document).on("click", ".btns", function(){
-    var queryUrl = "https://api.giphy.com/v1/gifs/search?q="+query+APIkey+"&limit=10"
+    $("#gifHolder").text("")
     query = $(this).val()  
+    var queryUrl = "https://api.giphy.com/v1/gifs/search?q="+query+APIkey+"&limit=10"
           $.ajax({
               url: queryUrl,
               method: "GET"
