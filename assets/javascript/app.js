@@ -1,31 +1,38 @@
-let APIkey = "&api_key=WFWKuEi7c2nOXtzy42TUXMkcLKkB0jsS",
-
-gifbtns = []
-
-
-
-$("#submitItem").on("click", function(event){
-    query = $("input").val(),
-    queryUrl = "https://api.giphy.com/v1/gifs/random?" + APIkey + "&q="+query
-
-    event.preventDefault()
-
-    $.ajax({
-        url: queryUrl,
-        method: "GET"
-    }).then(function(response){
-        console.log(response.data.image_original_url)
-        let gifImg = $("<img>")
-        gifImg.attr("value", query)
-        gifImg.attr("src", response.data.image_original_url)
-        $("#gifHolder").append(gifImg)
-    })
-    if(query !== "") {
-    gifbtns.push(query)
-    $("#addItem").val("")
-}
-
-
-console.log(gifbtns)
-
-})
+$(document).ready(function(){
+  let APIkey = "&api_key=WFWKuEi7c2nOXtzy42TUXMkcLKkB0jsS",
+  
+  topics = [];
+  var query;
+  $("#submitItem").on("click", function(e){
+    e.preventDefault()
+    query = $("#addItem").val()
+    if(query !== ""){
+      var btns = $("<button>")
+      btns.attr("value", query)
+      btns.addClass("btns")
+      $("#btnHolder").append(btns)
+      btns.text(query)
+    }
+  })
+  $(document).on("click", ".btns", function(){
+    var queryUrl = "https://api.giphy.com/v1/gifs/search?q="+query+APIkey+"&limit=10"
+    query = $(this).val()  
+          $.ajax({
+              url: queryUrl,
+              method: "GET"
+          }).then(function(response){
+            for(var i = 0; i < response.data.length; i++) {
+            var imgsrc = response.data[i].images.downsized_medium.url
+            var gifs = $("<img>")
+            gifs.attr("id", query)
+            gifs.attr("src", imgsrc)
+            .width("250px")
+            $("#gifHolder").prepend(gifs)
+          }
+            console.log(response.data)
+          });
+      })
+  
+  });
+  
+  
